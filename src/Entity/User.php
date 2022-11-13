@@ -38,9 +38,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::BIGINT)]
     private int $cash = 0;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: VoteTransaction::class, orphanRemoval: true)]
+    private Collection $voteTransactions;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
+        $this->voteTransactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,6 +155,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCash(int $cash): self
     {
         $this->cash = $cash;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VoteTransaction>
+     */
+    public function getVoteTransactions(): Collection
+    {
+        return $this->voteTransactions;
+    }
+
+    public function addVoteTransaction(VoteTransaction $voteTransaction): self
+    {
+        if (!$this->voteTransactions->contains($voteTransaction)) {
+            $this->voteTransactions->add($voteTransaction);
+            $voteTransaction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVoteTransaction(VoteTransaction $voteTransaction): self
+    {
+        if ($this->voteTransactions->removeElement($voteTransaction)) {
+            // set the owning side to null (unless already changed)
+            if ($voteTransaction->getUser() === $this) {
+                $voteTransaction->setUser(null);
+            }
+        }
 
         return $this;
     }

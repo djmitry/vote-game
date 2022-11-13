@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\BetCondition;
 use App\Repository\VoteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,9 +42,13 @@ class Vote
     #[ORM\Column]
     private ?\DateTimeImmutable $finishedAt = null;
 
+    #[ORM\OneToMany(mappedBy: 'vote', targetEntity: VoteTransaction::class)]
+    private Collection $voteTransactions;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->voteTransactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +148,36 @@ class Vote
     public function setFinishedAt(\DateTimeImmutable $finishedAt): self
     {
         $this->finishedAt = $finishedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VoteTransaction>
+     */
+    public function getVoteTransactions(): Collection
+    {
+        return $this->voteTransactions;
+    }
+
+    public function addVoteTransaction(VoteTransaction $voteTransaction): self
+    {
+        if (!$this->voteTransactions->contains($voteTransaction)) {
+            $this->voteTransactions->add($voteTransaction);
+            $voteTransaction->setVote($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVoteTransaction(VoteTransaction $voteTransaction): self
+    {
+        if ($this->voteTransactions->removeElement($voteTransaction)) {
+            // set the owning side to null (unless already changed)
+            if ($voteTransaction->getVote() === $this) {
+                $voteTransaction->setVote(null);
+            }
+        }
 
         return $this;
     }
