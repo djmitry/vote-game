@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bet list{% endblock %}
+
+{% block body %}
+    {% for item in bets %}
+        <div>Vote: <a href="{{ path('app_vote_view', {vote: item.voteId}) }}">{{ item.voteTitle }}</a></div>
+        <div>Vote created: {{ item.voteFinishedAt|date }}</div>
+        <div>Username: {{ item.username }}</div>
+        <div>Status: {{ item.status }}</div>
+        <div>Bet: {{ item.bet }}</div>
+        <div>Condition: {{ item.condition }}</div>
+        <div>Created: {{ item.createdAt|date }}</div>
+        <br>
+    {% endfor %}
+{% endblock %}

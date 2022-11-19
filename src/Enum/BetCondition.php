@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enum;
 
 enum BetCondition: int {
@@ -14,10 +16,14 @@ enum BetCondition: int {
             $result[$case->name] = $case->value;
         }
         return $result;
-//        return [
-//            self::LIKE => 'Like',
-//            self::DISLIKE => 'Dislike',
-//            self::EQUALS => 'Equals',
-//        ];
+    }
+
+    public function label(): string
+    {
+        return match($this) {
+            static::LIKE => 'Like',
+            static::DISLIKE => 'Dislike',
+            static::EQUALS => 'Equals',
+        };
     }
 }

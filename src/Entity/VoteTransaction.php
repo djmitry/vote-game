@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\BetCondition;
 use App\Enum\BetStatus;
 use App\Repository\VoteTransactionRepository;
 use DateTimeImmutable;
@@ -123,14 +124,14 @@ class VoteTransaction
         return $this;
     }
 
-    public function getBetCondition(): ?int
+    public function getBetCondition(): BetCondition
     {
-        return $this->betCondition;
+        return BetCondition::from($this->betCondition);
     }
 
-    public function setBetCondition(int $betCondition): self
+    public function setBetCondition(BetCondition $betCondition): self
     {
-        $this->betCondition = $betCondition;
+        $this->betCondition = $betCondition->value;
 
         return $this;
     }

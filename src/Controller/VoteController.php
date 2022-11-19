@@ -15,9 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(name: 'app_vote_')]
 class VoteController extends AbstractController
 {
-    #[Route('/', name: 'vote_list')]
+    #[Route('/', name: 'list')]
     public function list(ManagerRegistry $registry): Response
     {
         $votes = $registry->getRepository(Vote::class)->findAll();
@@ -27,7 +28,7 @@ class VoteController extends AbstractController
         ]);
     }
 
-    #[Route('/view/{vote}', name: 'vote_view')]
+    #[Route('/view/{vote}', name: 'view')]
     public function view(Vote $vote, Request $request, VoteService $voteService): Response
     {
         if ($this->isGranted('ROLE_USER')) {
@@ -48,7 +49,7 @@ class VoteController extends AbstractController
                     $this->addFlash('error', 'Bet error.');
                 }
 
-                return $this->redirectToRoute('vote_view', ['vote' => $vote->getId()]);
+                return $this->redirectToRoute('app_vote_view', ['vote' => $vote->getId()]);
             }
 
             $formView = $form->createView();

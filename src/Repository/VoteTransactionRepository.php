@@ -76,7 +76,7 @@ class VoteTransactionRepository extends ServiceEntityRepository
         $transaction->setVote($betDto->getVote());
         $transaction->setUser($betDto->getUser());
         $transaction->setBet($betDto->getBet());
-        $transaction->setBetCondition($betDto->getCondition()->value);
+        $transaction->setBetCondition($betDto->getCondition());
         $transaction->setStatus($betDto->getStatus());
 
         $this->getEntityManager()->persist($transaction);
