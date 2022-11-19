@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
+use App\Dto\BetDto;
 use App\Entity\VoteTransaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -63,4 +66,21 @@ class VoteTransactionRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function create(BetDto $betDto): VoteTransaction
+    {
+        $user = $betDto->getUser();
+        $user->setCash($betDto->getUserCash());
+
+        $transaction = new VoteTransaction();
+        $transaction->setVote($betDto->getVote());
+        $transaction->setUser($betDto->getUser());
+        $transaction->setBet($betDto->getBet());
+        $transaction->setStatus($betDto->getStatus());
+
+        $this->getEntityManager()->persist($transaction);
+        $this->getEntityManager()->flush();
+
+        return $transaction;
+    }
 }

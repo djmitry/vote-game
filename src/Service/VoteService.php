@@ -1,53 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
-use App\Dto\BetDto;
-use App\Entity\VoteTransaction;
-use App\Enum\BetStatus;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
+use App\Entity\User;
+use App\Repository\VoteTransactionRepository;
 
 class VoteService
 {
-    private ObjectManager $em;
+    private BetBuilder $betBuilder;
+    private VoteTransactionRepository $transactionRepository;
 
-    public function __construct(EntityManagerInterface $doctrine)
+    public function __construct(BetBuilder $betBuilder, VoteTransactionRepository $transactionRepository)
     {
-        $this->em = $doctrine;
+        $this->betBuilder = $betBuilder;
+        $this->transactionRepository = $transactionRepository;
     }
 
-    public function prepareBet($vote, \App\Entity\User $user, int $cash): ?BetDto
+    public function createBet($vote, User $user, int $cash): bool
     {
-        if ($cash > $user->getCash()) {
-            return null;
+        $bet = $this->betBuilder->build($vote, $user, $cash);
+
+        if (!$bet) {
+            return false;
         }
 
-        $betDto = new BetDto(
-            $vote,
-            $user,
-            $user->getCash() - $cash,
-            $cash,
-            BetStatus::BET
-        );
-
-        return $betDto;
-    }
-
-//    TODO: another strategy, repo save
-    public function createBet(BetDto $betDto): void
-    {
-        $user = $betDto->getUser();
-        $user->setCash($betDto->getUserCash());
-
-        $transaction = new VoteTransaction();
-        $transaction->setVote($betDto->getVote());
-        $transaction->setUser($betDto->getUser());
-        $transaction->setBet($betDto->getBet());
-        $transaction->setStatus($betDto->getStatus());
-
-        $this->em->persist($transaction);
-        $this->em->flush();
+        return (bool)$this->transactionRepository->create($bet);
     }
 }
