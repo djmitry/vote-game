@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ vote.title }}{% endblock %}
+
+{% block body %}
+<div class="example-wrapper">
+        <div>
+            <div>{{ vote.id }}</div>
+            <div>Title: <a href="{{ path('vote_view', {vote: vote.id}) }}">{{ vote.title }}</a></div>
+            <div>{{ vote.description }}</div>
+            <div>{{ vote.image }}</div>
+            <div>Username: {{ vote.user.username }}</div>
+        </div>
+        <br>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {{ form(form) }}
+    {% endif %}
+</div>
+{% endblock %}

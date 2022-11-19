@@ -7,6 +7,7 @@ namespace App\Tests\Service;
 use App\Dto\BetDto;
 use App\Entity\User;
 use App\Entity\Vote;
+use App\Enum\BetCondition;
 use App\Enum\BetStatus;
 use App\Service\BetBuilder;
 use PHPUnit\Framework\TestCase;
@@ -16,10 +17,10 @@ class VoteServiceTest extends TestCase
     /**
      * @dataProvider betDataProvider
      */
-    public function testBuildBet(User $user, Vote $vote, BetDto $betDto, int $cash): void
+    public function testBuildBet(User $user, Vote $vote, BetDto $betDto, int $cash, BetCondition $condition): void
     {
         $service = new BetBuilder();
-        $actual = $service->build($vote, $user, $cash);
+        $actual = $service->build($vote, $user, $cash, $condition);
 
         $this->assertEquals($betDto, $actual);
     }
@@ -36,7 +37,8 @@ class VoteServiceTest extends TestCase
             $user,
             900,
             100,
-            BetStatus::BET
+            BetCondition::LIKE,
+            BetStatus::BET,
         );
 
         return [
@@ -45,6 +47,7 @@ class VoteServiceTest extends TestCase
                 $vote,
                 $betDto,
                 100,
+                BetCondition::LIKE,
             ],
         ];
     }

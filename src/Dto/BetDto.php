@@ -6,16 +6,18 @@ namespace App\Dto;
 
 use App\Entity\User;
 use App\Entity\Vote;
+use App\Enum\BetCondition;
 use App\Enum\BetStatus;
 
 class BetDto
 {
     public function __construct(
-        private readonly Vote      $vote,
-        private readonly User      $user,
-        private readonly int       $userCash,
-        private readonly int       $bet,
-        private readonly BetStatus $status,
+        private readonly Vote         $vote,
+        private readonly User         $user,
+        private readonly int          $userCash,
+        private readonly int          $bet,
+        private readonly BetCondition $condition,
+        private readonly BetStatus    $status,
     )
     {
     }
@@ -28,9 +30,6 @@ class BetDto
         return $this->vote;
     }
 
-    /**
-     * @return User
-     */
     public function getUser(): User
     {
         return $this->user;
@@ -52,6 +51,11 @@ class BetDto
         return $this->bet;
     }
 
+    public function getCondition(): BetCondition
+    {
+        return $this->condition;
+    }
+
     /**
      * @return BetStatus
      */
@@ -59,7 +63,6 @@ class BetDto
     {
         return $this->status;
     }
-
 
 
 }

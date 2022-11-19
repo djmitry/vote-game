@@ -38,6 +38,9 @@ class VoteTransaction
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $betCondition = null;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
@@ -116,6 +119,18 @@ class VoteTransaction
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getBetCondition(): ?int
+    {
+        return $this->betCondition;
+    }
+
+    public function setBetCondition(int $betCondition): self
+    {
+        $this->betCondition = $betCondition;
 
         return $this;
     }

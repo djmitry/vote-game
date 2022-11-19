@@ -26,6 +26,7 @@ class DemoFixtures extends Fixture
     {
         $user = new User();
         $user->setUsername('admin');
+        $user->setCash(PHP_INT_MAX);
         $user->setRoles(['ROLE_ADMIN']);
         $user->setPassword(
             $this->userPasswordHasher->hashPassword(
@@ -73,19 +74,11 @@ class DemoFixtures extends Fixture
         $manager->flush();
 
         for ($i = 0; $i < 10; $i++) {
-//            $vote = new VoteTransaction();
-//            $vote->setUser($users[rand(0, count($users) - 1)]);
-//            $vote->setVote($votes[rand(0, count($votes) - 1)]);
-//            $vote->setBet((string) rand(0, 9999999));
-//            $vote->setBetCondition(BetCondition::from(rand(0, 2)));
-//            $vote->setFinishedAt($datetime->modify('+ ' . (rand(1, 7) * 5) . ' minutes'));
-//            $manager->persist($vote);
-
-
-            $this->voteService->createBet($this->voteService->prepareBet(
+            $this->voteService->createBet(
                 $votes[rand(0, count($votes) - 1)],
                 $users[rand(0, count($users) - 1)],
-                rand(100, 999))
+                rand(100, 999),
+                BetCondition::from(rand(0, 2))
             );
 
             $votes[] = $vote;

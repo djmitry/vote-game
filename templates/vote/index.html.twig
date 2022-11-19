@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello VoteController!{% endblock %}
+
+{% block body %}
+
+    {% for vote in votes %}
+        <div>
+            <div>{{ vote.id }}</div>
+            <div>Title: <a href="{{ path('vote_view', {vote: vote.id}) }}">{{ vote.title }}</a></div>
+            <div>{{ vote.description }}</div>
+            <div>{{ vote.image }}</div>
+            <div>Username: {{ vote.user.username }}</div>
+        </div>
+        <br>
+    {% endfor %}
+
+{% endblock %}

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User;
+use App\Entity\Vote;
+use App\Enum\BetCondition;
 use App\Repository\VoteTransactionRepository;
 
 class VoteService
@@ -18,9 +20,9 @@ class VoteService
         $this->transactionRepository = $transactionRepository;
     }
 
-    public function createBet($vote, User $user, int $cash): bool
+    public function createBet(Vote $vote, User $user, int $cash, BetCondition $condition): bool
     {
-        $bet = $this->betBuilder->build($vote, $user, $cash);
+        $bet = $this->betBuilder->build($vote, $user, $cash, $condition);
 
         if (!$bet) {
             return false;
