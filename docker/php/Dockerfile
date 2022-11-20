@@ -4,7 +4,9 @@ RUN apk update && apk add \
     $PHPIZE_DEPS \
     zip \
     bash \
-    git
+    git \
+#    npm \
+    yarn
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \

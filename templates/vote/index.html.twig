@@ -3,16 +3,19 @@
 {% block title %}Vote list{% endblock %}
 
 {% block body %}
-
+<div class="row">
     {% for vote in votes %}
-        <div>
-            <div>{{ vote.id }}</div>
-            <div>Title: <a href="{{ path('app_vote_view', {vote: vote.id}) }}">{{ vote.title }}</a></div>
-            <div>{{ vote.description }}</div>
-            <div>{{ vote.image }}</div>
-            <div>Username: {{ vote.user.username }}</div>
+        <div class="col-sm-4">
+            <div class="card mb-4" data-id="{{ vote.id }}">
+                <img src="{{ vote.image }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{{ path('app_vote_view', {vote: vote.id}) }}">{{ vote.title }}</a></h5>
+                    <p class="card-text">{{ vote.description }}</p>
+                    <p class="card-text">{{ vote.user.username }}</p>
+                    <a href="{{ path('app_vote_view', {vote: vote.id}) }}" class="btn btn-primary">Go</a>
+                </div>
+            </div>
         </div>
-        <br>
     {% endfor %}
-
+</div>
 {% endblock %}

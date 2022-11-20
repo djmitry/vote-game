@@ -3,14 +3,22 @@
 {% block title %}Bet list{% endblock %}
 
 {% block body %}
+<div class="row">
     {% for item in bets %}
-        <div>Vote: <a href="{{ path('app_vote_view', {vote: item.voteId}) }}">{{ item.voteTitle }}</a></div>
-        <div>Vote created: {{ item.voteFinishedAt|date }}</div>
-        <div>Username: {{ item.username }}</div>
-        <div>Status: {{ item.status }}</div>
-        <div>Bet: {{ item.bet }}</div>
-        <div>Condition: {{ item.condition }}</div>
-        <div>Created: {{ item.createdAt|date }}</div>
-        <br>
+        <div class="col-sm-4">
+            <div class="card mb-4 {{ item.status == 'Bet' ? 'text-bg-warning' : item.status == 'Win' ? 'text-bg-success' : item.status == 'Loss' ? 'text-bg-danger' : '' }}" data-id="{{ item.voteId }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.voteTitle }}</h5>
+                    <p class="card-text">{{ item.voteFinishedAt|date }}</p>
+                    <p class="card-text">{{ item.username }}</p>
+                    <p class="card-text">{{ item.status }}</p>
+                    <p class="card-text">{{ item.bet }}</p>
+                    <p class="card-text">{{ item.condition }}</p>
+                    <p class="card-text">{{ item.createdAt|date }}</p>
+                    <a href="{{ path('app_vote_view', {vote: item.voteId}) }}" class="btn btn-light">View vote</a>
+                </div>
+            </div>
+        </div>
     {% endfor %}
+</div>
 {% endblock %}
