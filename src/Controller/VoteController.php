@@ -33,7 +33,6 @@ class VoteController extends AbstractController
     {
         if ($this->isGranted('ROLE_USER')) {
             $form = $this->createForm(BetType::class);
-
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {

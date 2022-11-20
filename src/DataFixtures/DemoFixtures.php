@@ -4,7 +4,9 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Entity\Vote;
+use App\Entity\VoteTransaction;
 use App\Enum\BetCondition;
+use App\Enum\BetStatus;
 use App\Service\VoteService;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -13,13 +15,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class DemoFixtures extends Fixture
 {
-    private UserPasswordHasherInterface $userPasswordHasher;
-    private VoteService $voteService;
-
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher, VoteService $voteService)
+    public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher)
     {
-        $this->userPasswordHasher = $userPasswordHasher;
-        $this->voteService = $voteService;
     }
 
     public function load(ObjectManager $manager): void
@@ -71,17 +68,17 @@ class DemoFixtures extends Fixture
             $votes[] = $vote;
         }
 
-        $manager->flush();
-
         for ($i = 0; $i < 10; $i++) {
-            $this->voteService->createBet(
-                $votes[rand(0, count($votes) - 1)],
-                $users[rand(0, count($users) - 1)],
-                rand(100, 999),
-                BetCondition::from(rand(0, 2))
-            );
-
-            $votes[] = $vote;
+            $bet = new VoteTransaction();
+            $bet->setBet(rand(1000, 9999));
+            $bet->setUser($users[rand(0, count($users) - 1)]);
+            $bet->setVote($votes[rand(0, count($votes) - 1)]);
+            $bet->setStatus(BetStatus::from(rand(0, 2)));
+            $bet->setBetCondition(BetCondition::from(rand(0, 2)));
+            $bet->setCreatedAt((new DateTimeImmutable)->modify('- ' . rand(0, 1000) . ' min'));
+            $manager->persist($bet);
         }
+
+        $manager->flush();
     }
 }

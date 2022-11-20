@@ -12,7 +12,7 @@ use App\Enum\BetStatus;
 use App\Service\BetBuilder;
 use PHPUnit\Framework\TestCase;
 
-class VoteServiceTest extends TestCase
+class BetBuilderTest extends TestCase
 {
     /**
      * @dataProvider betDataProvider
