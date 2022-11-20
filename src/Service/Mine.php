@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class Mine
 {
     private const KEY = 'mineClickTime';
 
-    public function __construct(private readonly Session $session)
+    public function __construct(private readonly RequestStack $requestStack)
     {
     }
 
@@ -22,18 +22,16 @@ class Mine
     private function getRate(): int
     {
         $currentTime = time() * 1000;
-        $recentTime = $this->session->get(self::KEY, $currentTime);
-        $this->session->set(self::KEY, $currentTime);
+        $recentTime = $this->requestStack->getSession()->get(self::KEY, $currentTime);
+        $this->requestStack->getSession()->set(self::KEY, $currentTime);
 
         $diff = $currentTime - $recentTime;
-        $rate = match(true) {
+        return match(true) {
             $diff <= 100 => 5,
             $diff <= 200 => 4,
             $diff <= 300 => 3,
             $diff <= 400 => 2,
             default => 1,
         };
-
-        return $rate;
     }
 }

@@ -6,6 +6,8 @@ namespace App\Tests\Service;
 
 use App\Service\Mine;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class MineTest extends TestCase
@@ -17,8 +19,12 @@ class MineTest extends TestCase
     {
         $session = $this->createStub(Session::class);
         $session->method('get')->willReturn($time);
+        $request = new Request();
+        $request->setSession($session);
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+        $service = new Mine($requestStack);
 
-        $service = new Mine($session);
         $actual = $service->click($basePoints);
 
         $this->assertEquals($basePoints * $rate, $actual);
