@@ -6,9 +6,7 @@ namespace App\Tests\Service;
 
 use App\Service\Mine;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Redis;
 
 class MineTest extends TestCase
 {
@@ -17,15 +15,11 @@ class MineTest extends TestCase
      */
     public function testClick(int $basePoints, int $rate, int $time): void
     {
-        $session = $this->createStub(Session::class);
-        $session->method('get')->willReturn($time);
-        $request = new Request();
-        $request->setSession($session);
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
-        $service = new Mine($requestStack);
+        $redis = $this->createStub(Redis::class);
+        $redis->method('get')->willReturn($time);
+        $service = new Mine($redis);
 
-        $actual = $service->click($basePoints);
+        $actual = $service->click($basePoints, 1);
 
         $this->assertEquals($basePoints * $rate, $actual);
     }

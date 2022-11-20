@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\RequestStack;
+use Redis;
 
 class Mine
 {
     private const KEY = 'mineClickTime';
 
-    public function __construct(private readonly RequestStack $requestStack)
+    public function __construct(private readonly Redis $redis)
     {
     }
 
-    public function click(int $basePoints): int
+    public function click(int $basePoints, int $userId): int
     {
-        return $basePoints * $this->getRate();
+        return $basePoints * $this->getRate($userId);
     }
 
-    private function getRate(): int
+    private function getRate(int $userId): int
     {
         $currentTime = time() * 1000;
-        $recentTime = $this->requestStack->getSession()->get(self::KEY, $currentTime);
-        $this->requestStack->getSession()->set(self::KEY, $currentTime);
+        $recentTime = $this->redis->get(self::KEY . $userId) ?? $currentTime;
+        $this->redis->set(self::KEY, $currentTime);
 
         $diff = $currentTime - $recentTime;
-        return match(true) {
+        return match (true) {
             $diff <= 100 => 5,
             $diff <= 200 => 4,
             $diff <= 300 => 3,

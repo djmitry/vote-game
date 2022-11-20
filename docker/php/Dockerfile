@@ -5,7 +5,6 @@ RUN apk update && apk add \
     zip \
     bash \
     git \
-#    npm \
     yarn
 
 RUN pecl install xdebug \
@@ -21,3 +20,6 @@ RUN echo "xdebug.discover_client_host = on" >> ${XDEBUG_INI} \
     && echo "xdebug.mode = debug" >> ${XDEBUG_INI}
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN pecl install redis \
+    && docker-php-ext-enable redis.so
