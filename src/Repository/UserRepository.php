@@ -56,6 +56,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->save($user, true);
     }
 
+    public function addCash(User $user, int $cash): void
+    {
+        $user->setCash($user->getCash() + $cash);
+
+        $this->save($user, true);
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

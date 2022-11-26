@@ -14,24 +14,35 @@ import './bootstrap';
 
 require('bootstrap');
 
-function NotifServer(){
+let token = $('.mine').data('token');
+
+function NotifServer() {
     let notif = new WebSocket("ws://localhost:6001");
 
     notif.onmessage = function (event) {
         console.log('onmessage');
         console.log(event.data);
-        $('.content').append('<p>'+ event.data +'</p>');
+
+        if (!event.data) {
+            return;
+        }
+
+        let data = JSON.parse(event.data);
+
+        console.log(data)
+
+        if (data.score) {
+            $('.mine .score').remove();
+            $('.mine').append($('<div class="score">'+data.score+'</div>'));
+        }
     }
 
-    notif.onopen = function() {
+    notif.onopen = function () {
         console.log('onopen');
         $('body').append('<p> >>> Connected</p>');
-        var token_user = '123';
-        var authElements = "{\"userData\":\""+token_user+"\"}";
-        notif.send(authElements);
     }
 
-    notif.onerror = function(error) {
+    notif.onerror = function (error) {
         console.log('onerror');
         $('body').append('<p> >>> Error...</p>');
     }
@@ -41,7 +52,7 @@ function NotifServer(){
 
 let notif = NotifServer();
 
-$('.mine').click(function() {
-    console.log('mine');
-    notif.send({some: 'some'});
+$('.mine').click(function () {
+    console.log('mine', token);
+    notif.send(JSON.stringify({token: token}));
 });
