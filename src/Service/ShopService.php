@@ -26,6 +26,10 @@ class ShopService
             throw new InvalidArgumentException('Shop item not found');
         }
 
+        if ($this->userShopItemRepository->findOneBy(['user' => $user, 'shopItem' => $shopItem])) {
+            return false;
+        }
+
         return $this->userShopItemRepository->create($shopItem, $user);
     }
 }

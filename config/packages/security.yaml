@@ -37,6 +37,7 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
          - { path: ^/mine, roles: ROLE_USER }
          - { path: ^/shop, roles: ROLE_USER }
+         - { path: ^/inventory, roles: ROLE_USER }
 
 when@test:
     security:

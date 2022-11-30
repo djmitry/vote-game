@@ -78,4 +78,16 @@ class ShopItemRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findUserItems(int $userId)
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.userShopItems', 'usi')
+            ->leftJoin('usi.user', 'usiu')
+            ->andWhere('IDENTITY(usi.user) = :user')
+            ->setParameter('user', $userId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

@@ -26,10 +26,11 @@
                         {% else %}
                             <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}" aria-current="page">Login</a></li>
                         {% endif %}
-                        <li class="nav-item"><a class="nav-link" href="{{ path('app_vote_list') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_vote_list') }}">Vote list</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_bet_list') }}">Bet list</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_mine') }}">Mine</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_shop_list') }}">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_inventory_list') }}">Inventory</a></li>
                     </ul>
                 </div>
             </div>
@@ -37,7 +38,7 @@
 
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
-                    <div class="flash-{{ label }}">
+                    <div class="alert alert-{{ label }}">
                         {{ message }}
                     </div>
                 {% endfor %}

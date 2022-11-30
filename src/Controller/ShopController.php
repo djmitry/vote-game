@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\ShopItemType;
 use App\Repository\ShopItemRepository;
 use App\Service\ShopService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,12 +37,19 @@ class ShopController extends AbstractController
 
         if ($request->getMethod() === 'POST') {
             $id = (int) $request->get('id');
-            $shopService->buy($id, $this->getUser());
+
+            if ($shopService->buy($id, $this->getUser())) {
+                $this->addFlash('success', 'Bought.');
+            } else {
+                $this->addFlash('danger', 'Can\'t buy.');
+            }
+
+            return $this->redirectToRoute('app_shop_list');
         }
 
         return $this->render('shop/index.html.twig', [
             //'form' => $form->createView(),
-            'shopItems' => $shopItemRepository->findNewItems($this->getUser()->getId()),
+            'shopItems' => $shopItemRepository->findNewItems(),
         ]);
     }
 }
