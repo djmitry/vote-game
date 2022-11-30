@@ -9,7 +9,6 @@ use App\Entity\Vote;
 use App\Entity\VoteTransaction;
 use App\Enum\BetCondition;
 use App\Enum\BetStatus;
-use App\Service\VoteService;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -25,7 +24,7 @@ class DemoFixtures extends Fixture
     {
         $user = new User();
         $user->setUsername('admin');
-        $user->setCash(PHP_INT_MAX);
+        $user->setCash(1000000000);
         $user->setRoles(['ROLE_ADMIN']);
         $user->setPassword(
             $this->userPasswordHasher->hashPassword(

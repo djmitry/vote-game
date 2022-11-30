@@ -38,11 +38,18 @@ class MineMessage implements MessageComponentInterface
     function onMessage(ConnectionInterface $from, $msg): void
     {
         $data = json_decode($msg, true);
-        $score = $this->mine->click(2, 1);
         $userId = $this->redis->get($data['token']);
         $user = $this->userRepository->find($userId);
+
+        $score = $this->mine->click(1, $user->getId());
         $this->userRepository->addCash($user, $score);
 
-        $from->send(json_encode(['message' => 'Thanks for the message: ' . $data['token']  . $userId.  ', your score is: ' . $score, 'score' => $score]));
+        $time = $this->redis->get('mineClickTime' . $userId);
+
+        $from->send(json_encode([
+            'message' => 'Thanks for the message: ' . $data['token']  . $userId.  ', your score is: ' . $score,
+            'score' => $score,
+            'time' => $time,
+        ]));
     }
 }

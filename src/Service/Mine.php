@@ -19,11 +19,12 @@ class Mine
         return $basePoints * $this->getRate($userId);
     }
 
+    //TODO: refactor to test without redis
     private function getRate(int $userId): int
     {
-        $currentTime = time() * 1000;
+        $currentTime = (int) microtime(true) * 1000;
         $recentTime = $this->redis->get(self::KEY . $userId) ?? $currentTime;
-        $this->redis->set(self::KEY, $currentTime);
+        $this->redis->set(self::KEY . $userId, $currentTime);
 
         $diff = $currentTime - $recentTime;
         return match (true) {
