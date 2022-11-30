@@ -41,10 +41,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: VoteTransaction::class, orphanRemoval: true)]
     private Collection $voteTransactions;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserShopItem::class, orphanRemoval: true)]
+    private Collection $userShopItems;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
         $this->voteTransactions = new ArrayCollection();
+        $this->userShopItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -183,6 +187,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($voteTransaction->getUser() === $this) {
                 $voteTransaction->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserShopItem>
+     */
+    public function getUserShopItems(): Collection
+    {
+        return $this->userShopItems;
+    }
+
+    public function addUserShopItem(UserShopItem $userShopItem): self
+    {
+        if (!$this->userShopItems->contains($userShopItem)) {
+            $this->userShopItems->add($userShopItem);
+            $userShopItem->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserShopItem(UserShopItem $userShopItem): self
+    {
+        if ($this->userShopItems->removeElement($userShopItem)) {
+            // set the owning side to null (unless already changed)
+            if ($userShopItem->getUser() === $this) {
+                $userShopItem->setUser(null);
             }
         }
 

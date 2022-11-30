@@ -2,7 +2,9 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ShopItem;
 use App\Entity\User;
+use App\Entity\UserShopItem;
 use App\Entity\Vote;
 use App\Entity\VoteTransaction;
 use App\Enum\BetCondition;
@@ -36,7 +38,7 @@ class DemoFixtures extends Fixture
 
         $users = [];
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $user = new User();
             $user->setUsername('user_' . uniqid());
             $user->setCash(rand(9999, 99999));
@@ -77,6 +79,31 @@ class DemoFixtures extends Fixture
             $bet->setBetCondition(BetCondition::from(rand(0, 2)));
             $bet->setCreatedAt((new DateTimeImmutable)->modify('- ' . rand(0, 1000) . ' min'));
             $manager->persist($bet);
+        }
+
+        $shopItems = [];
+
+        for ($i = 0; $i < 10; $i++) {
+            $item = new ShopItem();
+            $item->setTitle(uniqid());
+            $item->setSlug(uniqid());
+            $item->setPrice(rand(100, 900));
+            $item->setType(rand(1, 4));
+            $item->setValue(rand(10, 90));
+            $shopItems[] = $item;
+
+            $manager->persist($item);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            $userId = $users[$i];
+            $shopItemId = $shopItems[$i];
+
+            $item = new UserShopItem();
+            $item->setUser($userId);
+            $item->setShopItem($shopItemId);
+
+            $manager->persist($item);
         }
 
         $manager->flush();

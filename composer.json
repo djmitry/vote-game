@@ -7,6 +7,7 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-redis": "*",
         "cboden/ratchet": "^0.4.4",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.7",
@@ -47,8 +48,7 @@
         "symfony/yaml": "6.1.*",
         "symfonycasts/verify-email-bundle": "^1.12",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-        "ext-redis": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
