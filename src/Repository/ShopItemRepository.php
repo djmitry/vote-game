@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\ShopItem;
@@ -63,4 +65,17 @@ class ShopItemRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    //TODO: exclude user product
+    public function findNewItems()
+    {
+        return $this->createQueryBuilder('s')
+            //->leftJoin('s.userShopItems', 'usi')
+            //->leftJoin('usi.user', 'usiu')
+            //->andWhere('IDENTITY(usi.user) != :user')
+            //->setParameter('user', $userId)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
+use App\Entity\ShopItem;
+use App\Entity\User;
 use App\Entity\UserShopItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -63,4 +67,16 @@ class UserShopItemRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function create(ShopItem $shopItem, User $user): bool
+    {
+        $item = new UserShopItem();
+        $item->setUser($user);
+        $item->setShopItem($shopItem);
+
+        $this->getEntityManager()->persist($item);
+        $this->getEntityManager()->flush();
+
+        return true;
+    }
 }
