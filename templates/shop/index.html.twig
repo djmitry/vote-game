@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop{% endblock %}
+
+{% block body %}
+{#    {{ form_start(form) }}#}
+    <form action="" method="post">
+    <div class="row">
+{#        {{ dump(form) }}#}
+
+        {% for item in shopItems|slice(0,2) %}
+            <div class="col-sm-4">
+                <div class="card mb-4 {{ item.type == 1 ? 'text-bg-warning' : item.type == 2 ? 'text-bg-success' : item.type == 3 ? 'text-bg-danger' : '' }}" data-id="{{ item.id }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.title }}</h5>
+                        <p class="card-text">{{ item.type }}</p>
+                        <p class="card-text">{{ item.price }}</p>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+{#                            {{ form_widget(form.submit, {value: item.id}) }}#}
+                            <button type="submit" name="id" value="{{ item.id }}">Buy</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{#    {{ form_end(form) }}#}
+    </form>
+{% endblock %}
