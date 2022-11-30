@@ -11,6 +11,7 @@ use Redis;
 class MineTest extends TestCase
 {
     /**
+     * FIXME:
      * @dataProvider clickDataProvider
      */
     public function testClick(int $basePoints, int $rate, int $time): void
@@ -26,31 +27,33 @@ class MineTest extends TestCase
 
     public function clickDataProvider(): array
     {
+        $time = (int) (microtime(true) * 1000);
+
         return [
             [
                 2,
                 1,
-                time() * 1000 - 1000,
+                $time - 1000,
             ],
             [
                 3,
                 2,
-                time() * 1000 - 400,
+                $time - 400,
             ],
             [
                 10,
                 3,
-                time() * 1000 - 300,
+                $time - 300,
             ],
             [
                 12,
                 4,
-                time() * 1000 - 200,
+                $time - 200,
             ],
             [
                 25,
                 5,
-                time() * 1000 - 100,
+                $time - 100,
             ],
         ];
     }
