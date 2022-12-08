@@ -24,3 +24,8 @@ services:
     # please note that last definitions always *replace* previous ones
 
     Redis: '@snc_redis.default'
+
+    App\Service\Modifier\Modifier:
+        arguments:
+            $modifiers:
+                - '@App\Service\Modifier\HpModifier'

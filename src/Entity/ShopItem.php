@@ -28,10 +28,10 @@ class ShopItem
     private ?int $price = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $type = null;
+    private int $type = 1;
 
     #[ORM\Column]
-    private ?int $value = null;
+    private int $value = 0;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -90,7 +90,7 @@ class ShopItem
         return $this;
     }
 
-    public function getType(): ?int
+    public function getType(): int
     {
         return $this->type;
     }
@@ -102,7 +102,7 @@ class ShopItem
         return $this;
     }
 
-    public function getValue(): ?int
+    public function getValue(): int
     {
         return $this->value;
     }

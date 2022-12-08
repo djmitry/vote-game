@@ -79,4 +79,11 @@ class UserShopItemRepository extends ServiceEntityRepository
 
         return true;
     }
+
+    public function changeStatus(UserShopItem $userShopItem, int $status)
+    {
+        $userShopItem->setStatus($status);
+
+        $this->getEntityManager()->flush();
+    }
 }

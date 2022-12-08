@@ -44,6 +44,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserShopItem::class, orphanRemoval: true)]
     private Collection $userShopItems;
 
+    #[ORM\Column]
+    private ?int $maxHp = null;
+
+    #[ORM\Column]
+    private ?int $currentHp = null;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
@@ -219,6 +225,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $userShopItem->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMaxHp(): ?int
+    {
+        return $this->maxHp;
+    }
+
+    public function setMaxHp(int $maxHp): self
+    {
+        $this->maxHp = $maxHp;
+
+        return $this;
+    }
+
+    public function getCurrentHp(): ?int
+    {
+        return $this->currentHp;
+    }
+
+    public function setCurrentHp(int $currentHp): self
+    {
+        $this->currentHp = $currentHp;
 
         return $this;
     }

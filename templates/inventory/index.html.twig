@@ -3,21 +3,21 @@
 {% block title %}Inventory{% endblock %}
 
 {% block body %}
-    <form action="" method="post">
-        <div class="row">
-            {% for item in shopItems %}
-                <div class="col-sm-4">
-                    <div class="card mb-4 {{ item.type == 1 ? 'text-bg-warning' : item.type == 2 ? 'text-bg-success' : item.type == 3 ? 'text-bg-danger' : '' }}" data-id="{{ item.id }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item.title }}</h5>
-                            <p class="card-text">{{ item.type }}</p>
-                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                <button type="submit" name="id" value="{{ item.id }}" class="btn btn-light">Apply</button>
-                            {% endif %}
-                        </div>
+    <div class="row">
+        {% for item in shopItems %}
+            <div class="col-sm-4">
+                <div class="card mb-4 {{ item.status == 0 ? 'text-bg-warning' : 'text-bg-success' }}" data-id="{{ item.id }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.title }}</h5>
+                        <p class="card-text">{{ item.type }}</p>
+                        {% if item.status == 0 %}
+                            <form action="{{ path('app_inventory_apply', {shopItem: item.id}) }}" method="POST">
+                                <button class="btn btn-light">Apply</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
-            {% endfor %}
-        </div>
-    </form>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

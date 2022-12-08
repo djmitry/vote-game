@@ -79,7 +79,10 @@ class ShopItemRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findUserItems(int $userId)
+    /**
+     * @return ShopItem[]
+     */
+    public function findUserItems(int $userId): array
     {
         return $this->createQueryBuilder('s')
             ->leftJoin('s.userShopItems', 'usi')
