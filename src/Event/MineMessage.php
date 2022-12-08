@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Repository\UserRepository;
-use App\Service\Mine;
+use App\Service\Mine\Mine;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use Redis;
