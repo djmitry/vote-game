@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service\Mine;
 
+use App\Repository\ShopItemRepository;
 use App\Service\Mine\Mine;
 use App\Service\Mine\MineScore;
 use PHPUnit\Framework\TestCase;
@@ -18,9 +19,12 @@ class MineTest extends TestCase
     {
         $redis = $this->createStub(Redis::class);
         $mineScore = $this->createStub(MineScore::class);
-        $mineScore->method('compute')->willReturn(1);
+        $mineScore
+            ->method('compute')
+            ->willReturn(1);
+        $shopItemRepository = $this->createStub(ShopItemRepository::class);
 
-        $service = new Mine($redis, $mineScore);
+        $service = new Mine($redis, $mineScore, $shopItemRepository);
 
         $actual = $service->click($basePoints, 1);
 

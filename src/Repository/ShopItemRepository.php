@@ -84,13 +84,35 @@ class ShopItemRepository extends ServiceEntityRepository
      */
     public function findUserItems(int $userId): array
     {
-        return $this->createQueryBuilder('s')
+        $builder =  $this->createQueryBuilder('s')
             ->leftJoin('s.userShopItems', 'usi')
             ->leftJoin('usi.user', 'usiu')
             ->andWhere('IDENTITY(usi.user) = :user')
             ->setParameter('user', $userId)
-            ->getQuery()
-            ->getResult()
             ;
+
+        //if ($type) {
+        //    $builder
+        //        ->andWhere('type = :type')
+        //        ->setParameters(['type' => $type]);
+        //}
+
+        return $builder->getQuery()->getResult();
+    }
+
+    public function findUserActiveItems(int $userId, int $type = null): array
+    {
+        $builder =  $this->createQueryBuilder('s')
+            ->leftJoin('s.userShopItems', 'usi')
+            ->leftJoin('usi.user', 'usiu')
+            ->andWhere('IDENTITY(usi.user) = :user')
+            ->andWhere('s.type = :type')
+            ->andWhere('usi.status = 1')
+            ->setParameters([
+                'user' => $userId,
+                'type' => $type
+            ]);
+
+        return $builder->getQuery()->getResult();
     }
 }

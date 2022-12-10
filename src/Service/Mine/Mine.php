@@ -4,28 +4,39 @@ declare(strict_types=1);
 
 namespace App\Service\Mine;
 
+use App\Repository\ShopItemRepository;
 use Redis;
 
 class Mine
 {
     private const KEY = 'mineClickTime';
 
-    public function __construct(private readonly Redis $redis, private readonly MineScore $mineScore)
+    public function __construct(
+        private readonly Redis $redis,
+        private readonly MineScore $mineScore,
+        private readonly ShopItemRepository $shopItemRepository,
+    )
     {
     }
 
     public function click(int $basePoints, int $userId): int
     {
-        return $basePoints * $this->getRate($userId);
+        ['start' => $start, 'end' => $end] = $this->getRange($userId);
+
+        $modifiers = $this->shopItemRepository->findUserActiveItems($userId, 2);
+
+        return $basePoints * $this->mineScore->compute($start, $end, $modifiers);
     }
 
-    //TODO: modifiers
-    private function getRate(int $userId): int
+    private function getRange(int $userId): array
     {
         $currentTime = (int) (microtime(true) * 1000);
         $recentTime = (int) $this->redis->get(self::KEY . $userId) ?? $currentTime;
         $this->redis->set(self::KEY . $userId, (string) $currentTime);
 
-        return $this->mineScore->compute($recentTime, $currentTime);
+        return [
+            'start' => $recentTime,
+            'end' => $currentTime,
+        ];
     }
 }
