@@ -14,6 +14,9 @@ import './bootstrap';
 
 require('bootstrap');
 
+import { registerVueControllerComponents } from '@symfony/ux-vue';
+registerVueControllerComponents(require.context('./vue/controllers', true, /\.vue$/));
+
 let token = $('.mine').data('token');
 
 function NotifServer() {

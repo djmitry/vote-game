@@ -3,6 +3,7 @@
 {% block title %}Vote list{% endblock %}
 
 {% block body %}
+<div {{ vue_component('CreateVote', { 'name': app.user.username }) }}></div>
 <div class="row">
     {% for vote in votes %}
         <div class="col-sm-4">
