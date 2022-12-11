@@ -9,10 +9,12 @@ use App\Entity\Vote;
 use App\Enum\BetCondition;
 use App\Form\BetType;
 use App\Repository\VoteRepository;
+use App\Service\FileUploader;
 use App\Service\VoteService;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +36,7 @@ class VoteController extends AbstractController
 
     //TODO: factory
     #[Route('/vote/create')]
-    public function createVote(Request $request, VoteService $voteService, VoteRepository $voteRepository): Response
+    public function createVote(Request $request, VoteService $voteService, VoteRepository $voteRepository, FileUploader $fileUploader): Response
     {
         if (!$this->isGranted('ROLE_USER')) {
             throw new AuthenticationException();
@@ -44,21 +46,25 @@ class VoteController extends AbstractController
         $user = $this->getUser();
 
         try {
-            $data = json_decode($request->getContent(), true);
             $vote = new Vote();
-            $vote->setTitle($data['title']);
-            $vote->setDescription($data['description']);
-            $vote->setBet($data['bet']);
-            $vote->setBetCondition(BetCondition::from($data['betCondition']));
+            $vote->setTitle($request->request->get('title'));
+            $vote->setDescription($request->request->get('description'));
+            $vote->setBet((int)$request->request->get('bet'));
+            $vote->setBetCondition(BetCondition::from((int)$request->request->get('betCondition')));
             $vote->setUser($user);
             $date = new DateTimeImmutable();
             $date = $date->modify('+ 5 minutes');
             $vote->setFinishedAt($date);
-
+            $fileName = $fileUploader->upload($request->files->get('file'), 'upload/vote');
+            $vote->setImage($fileName);
             $voteRepository->save($vote, true);
+
             $success = true;
             $message = 'Vote created.';
-        } catch(\Throwable) {
+        } catch (FileException $e) {
+            $success = false;
+            $message = 'File error.';
+        } catch (\Throwable $e) {
             $success = false;
             $message = 'Vote error.';
         }

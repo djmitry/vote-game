@@ -10,7 +10,7 @@
     {% for vote in votes %}
         <div class="col-sm-4">
             <div class="card mb-4" data-id="{{ vote.id }}">
-                <img src="{{ vote.image }}" class="card-img-top" alt="...">
+                <img src="upload/vote/{{ vote.image }}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title"><a href="{{ path('app_vote_view', {vote: vote.id}) }}">{{ vote.title }}</a></h5>
                     <p class="card-text">{{ vote.description }}</p>

@@ -7,7 +7,7 @@
         <div>{{ vote.id }}</div>
         <div>Title: <a href="{{ path('app_vote_view', {vote: vote.id}) }}">{{ vote.title }}</a></div>
         <div>{{ vote.description }}</div>
-        <div>{{ vote.image }}</div>
+        <div><img src="/upload/vote/{{ vote.image }}" alt=""></div>
         <div>Username: {{ vote.user.username }}</div>
     </div>
     <br>
