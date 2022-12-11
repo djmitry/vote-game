@@ -3,6 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Vote;
+use App\Enum\BetCondition;
+use App\Enum\BetStatus;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -63,4 +66,22 @@ class VoteRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * @return Vote[]
+     */
+    public function findFinished(): array
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.finishedAt < :finishedAt')
+            //->andWhere('v.status = :status')
+            ->setParameters([
+                'finishedAt' => new DateTimeImmutable(),
+                //'status' => BetStatus::BET,
+            ])
+            ->orderBy('v.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

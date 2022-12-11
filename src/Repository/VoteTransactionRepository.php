@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Dto\BetDto;
+use App\Entity\Vote;
 use App\Entity\VoteTransaction;
+use App\Enum\BetStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -83,5 +85,45 @@ class VoteTransactionRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
 
         return $transaction;
+    }
+
+    /**
+     * @return VoteTransaction[]
+     */
+    public function findWinners(Vote $vote): array
+    {
+        return $this->createQueryBuilder('vt')
+            ->andWhere('vt.vote = :vote')
+            ->andWhere('vt.betCondition = :voteCondition')
+            ->andWhere('vt.status = :status')
+            ->setParameters([
+                'vote' => $vote,
+                'voteCondition' => $vote->getBetCondition(),
+                'status' => BetStatus::BET,
+            ])
+            ->orderBy('vt.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return VoteTransaction[]
+     */
+    public function findLosers(Vote $vote): array
+    {
+        return $this->createQueryBuilder('vt')
+            ->andWhere('vt.vote = :vote')
+            ->andWhere('vt.betCondition != :voteCondition')
+            ->andWhere('vt.status = :status')
+            ->setParameters([
+                'vote' => $vote,
+                'voteCondition' => $vote->getBetCondition(),
+                'status' => BetStatus::BET,
+            ])
+            ->orderBy('vt.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

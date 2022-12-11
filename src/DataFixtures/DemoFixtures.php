@@ -65,6 +65,7 @@ class DemoFixtures extends Fixture
 
         $votes = [];
         $datetime = new DateTimeImmutable();
+        $datetime = $datetime->modify('- 1 day');
 
         for ($i = 0; $i < 15; $i++) {
             $vote = new Vote();
@@ -83,7 +84,7 @@ class DemoFixtures extends Fixture
             $bet->setBet((int)ceil(rand(1000, 9000) / 100) * 100);
             $bet->setUser($users[array_rand($users)]);
             $bet->setVote($votes[array_rand($votes)]);
-            $bet->setStatus(BetStatus::from(rand(0, 2)));
+            $bet->setStatus(BetStatus::BET);
             $bet->setBetCondition(BetCondition::from(rand(0, 2)));
             $bet->setCreatedAt((new DateTimeImmutable)->modify('- ' . rand(0, 1000) . ' min'));
             $manager->persist($bet);

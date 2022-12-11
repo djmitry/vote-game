@@ -23,3 +23,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN pecl install redis \
     && docker-php-ext-enable redis.so
+
+RUN apk add \
+    supervisor
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+ENTRYPOINT supervisord -c /etc/supervisor/conf.d/supervisord.conf
