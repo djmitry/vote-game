@@ -3,7 +3,9 @@
 {% block title %}Vote list{% endblock %}
 
 {% block body %}
-<div {{ vue_component('CreateVote', { 'name': app.user.username }) }}></div>
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <div {{ vue_component('CreateVote', { 'name': app.user.username }) }}></div>
+{% endif %}
 <div class="row">
     {% for vote in votes %}
         <div class="col-sm-4">
