@@ -34,12 +34,14 @@
                         </ul>
 
                     </div>
-                    <div class="d-flex">
-                        <ul class="navbar-nav">
-                            <li class="me-2">Cash: {{ app.user.cash }}</li>
-                            <li>HP: {{ app.user.currentHp}}/{{app.user.maxHp }}</li>
-                        </ul>
-                    </div>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <div class="d-flex">
+                            <ul class="navbar-nav">
+                                <li class="me-2">Cash: {{ app.user.cash }}</li>
+                                <li>HP: {{ app.user.currentHp}}/{{app.user.maxHp }}</li>
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
             </nav>
 
