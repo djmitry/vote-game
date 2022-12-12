@@ -12,7 +12,7 @@
     </div>
     <br>
 
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    {{ form(form) }}
+    {% if is_granted('ROLE_USER') %}
+        {{ form(form) }}
     {% endif %}
 {% endblock %}

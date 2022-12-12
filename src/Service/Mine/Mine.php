@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Service\Mine;
 
 use App\Event\MineClick;
+use App\Event\UserZeroHp;
 use App\Repository\ShopItemRepository;
 use App\Repository\UserRepository;
+use InvalidArgumentException;
 use Redis;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -27,6 +29,10 @@ class Mine
     public function click(int $basePoints, int $userId): int
     {
         $user = $this->userRepository->find($userId);
+        if ($user->getCurrentHp() <= 0) {
+            $this->eventDispatcher->dispatch(new UserZeroHp($user));
+            throw new InvalidArgumentException('Hp is zero.');
+        }
 
         ['start' => $start, 'end' => $end] = $this->getRange($user->getId());
         $modifiers = $this->shopItemRepository->findUserActiveItems($user, 2);

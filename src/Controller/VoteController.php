@@ -36,7 +36,7 @@ class VoteController extends AbstractController
 
     //TODO: factory
     #[Route('/vote/create')]
-    public function createVote(Request $request, VoteService $voteService, VoteRepository $voteRepository, FileUploader $fileUploader): Response
+    public function createVote(Request $request, VoteRepository $voteRepository, FileUploader $fileUploader): Response
     {
         if (!$this->isGranted('ROLE_USER')) {
             throw new AuthenticationException();

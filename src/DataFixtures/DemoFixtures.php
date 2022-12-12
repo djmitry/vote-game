@@ -28,15 +28,15 @@ class DemoFixtures extends Fixture
         $user = new User();
         $user->setUsername('admin');
         $user->setCash(1000000000);
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
         $user->setPassword(
             $this->userPasswordHasher->hashPassword(
                 $user,
                 '111111'
             )
         );
-        $user->setMaxHp(100);
-        $user->setCurrentHp(100);
+        $user->setMaxHp(500);
+        $user->setCurrentHp(500);
 
         $manager->persist($user);
 
@@ -46,7 +46,7 @@ class DemoFixtures extends Fixture
 
         for ($i = 0; $i < 15; $i++) {
             $user = new User();
-            $user->setUsername('user_' . uniqid());
+            $user->setUsername('user_' . $i);
             $user->setCash((int)ceil(rand(9999, 99999) / 1000) * 1000);
             $user->setRoles(['ROLE_USER']);
             $user->setPassword(
@@ -56,7 +56,7 @@ class DemoFixtures extends Fixture
                 )
             );
             $user->setMaxHp(100);
-            $user->setCurrentHp(100);
+            $user->setCurrentHp(10);
 
             $manager->persist($user);
 

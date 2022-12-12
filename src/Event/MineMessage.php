@@ -31,7 +31,7 @@ class MineMessage implements MessageComponentInterface
 
     function onError(ConnectionInterface $conn, \Exception $e)
     {
-        $conn->send(json_encode(['Error. ' . $e->getMessage()]));
+        $conn->send(json_encode(['error' => $e->getMessage()]));
     }
 
     function onMessage(ConnectionInterface $from, $msg): void

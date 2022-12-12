@@ -34,6 +34,10 @@ export default {
         let data = JSON.parse(event.data);
         if (data.score) {
           parent.score = data.score;
+        } else if (data.error === 'Hp is zero.') {
+          setTimeout(() => {
+            location.href = '/';
+          }, 3000);
         }
       }
 

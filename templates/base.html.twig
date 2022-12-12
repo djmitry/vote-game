@@ -21,16 +21,18 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_vote_list') }}">Vote list</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_bet_list') }}">Bet list</a></li>
+                            {% if is_granted('ROLE_USER') %}
+                                <li class="nav-item"><a class="nav-link" href="{{ path('app_mine') }}">Mine</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{ path('app_shop_list') }}">Shop</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{ path('app_inventory_list') }}">Inventory</a></li>
+                            {% endif %}
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                 <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}" aria-current="page">Logout</a></li>
                             {% else %}
                                 <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}" aria-current="page">Login</a></li>
                             {% endif %}
-                            <li class="nav-item"><a class="nav-link" href="{{ path('app_vote_list') }}">Vote list</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ path('app_bet_list') }}">Bet list</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ path('app_mine') }}">Mine</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ path('app_shop_list') }}">Shop</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ path('app_inventory_list') }}">Inventory</a></li>
                         </ul>
                     </div>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -40,6 +42,9 @@
                                     <div {{ vue_component('Cash', {'cash': app.user.cash, 'token': app.user.id}) }}></div>
                                 </li>
                                 <li><div {{ vue_component('HP', {'currentHp': app.user.currentHp, 'maxHp': app.user.maxHp, 'token': app.user.id}) }}></div></li>
+                                {% if is_granted('ROLE_GAME_OVER') %}
+                                    <li class="ms-3"><span class="badge rounded-pill bg-danger">GAME OVER</span></li>
+                                {% endif %}
                             </ul>
                         </div>
                     {% endif %}
