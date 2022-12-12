@@ -3,13 +3,5 @@
 {% block title %}Mine{% endblock %}
 
 {% block body %}
-    <style>
-        .mine {
-            background-image: url('images/mine.jpg');
-            width: 100%;
-            height: 100vh;
-            background-size: cover;
-        }
-    </style>
-    <div class="mine" data-token="{{ token }}"></div>
+    <div {{ vue_component('Mine', {token: token}) }}></div>
 {% endblock %}
