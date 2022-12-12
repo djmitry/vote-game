@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 
-class MineClickSubscriberSubscriber implements EventSubscriberInterface
+class MineClickSubscriber implements EventSubscriberInterface
 {
     private const DECREASE_POINTS = 1;
 
@@ -32,6 +32,12 @@ class MineClickSubscriberSubscriber implements EventSubscriberInterface
         $update = new Update(
             'http://vote/user/' . $user->getId() . '/hp',
             json_encode(['currentHp' => $user->getCurrentHp()])
+        );
+        $this->hub->publish($update);
+
+        $update = new Update(
+            'http://vote/user/' . $user->getId() . '/cash',
+            json_encode(['cash' => $user->getCash()])
         );
         $this->hub->publish($update);
     }
