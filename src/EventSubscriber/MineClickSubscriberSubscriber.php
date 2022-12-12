@@ -7,12 +7,17 @@ namespace App\EventSubscriber;
 use App\Event\MineClick;
 use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 
 class MineClickSubscriberSubscriber implements EventSubscriberInterface
 {
     private const DECREASE_POINTS = 1;
 
-    public function __construct(private readonly UserRepository $userRepository)
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly HubInterface $hub,
+    )
     {
     }
 
@@ -23,6 +28,12 @@ class MineClickSubscriberSubscriber implements EventSubscriberInterface
         $user->setCurrentHp($user->getCurrentHp() - self::DECREASE_POINTS);
 
         $this->userRepository->save($event->getUser(), true);
+
+        $update = new Update(
+            'http://vote/user/' . $user->getId() . '/hp',
+            json_encode(['currentHp' => $user->getCurrentHp()])
+        );
+        $this->hub->publish($update);
     }
 
     public static function getSubscribedEvents(): array

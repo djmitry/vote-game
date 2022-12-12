@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+###> symfony/mercure-bundle ###
+  mercure:
+    ports:
+      - "49150:49150"
+###< symfony/mercure-bundle ###
