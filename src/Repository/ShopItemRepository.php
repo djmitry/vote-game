@@ -6,8 +6,11 @@ namespace App\Repository;
 
 use App\Entity\ShopItem;
 use App\Entity\User;
+use App\Entity\UserShopItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 
 /**
  * @extends ServiceEntityRepository<ShopItem>
@@ -67,14 +70,13 @@ class ShopItemRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    //TODO: exclude user product
-    public function findNewItems()
+    public function findNewItems(User $user): array
     {
-        return $this->createQueryBuilder('s')
-            //->leftJoin('s.userShopItems', 'usi')
-            //->leftJoin('usi.user', 'usiu')
-            //->andWhere('IDENTITY(usi.user) != :user')
-            //->setParameter('user', $userId)
+        $shopItemIds = array_map(fn(UserShopItem $item) => $item->getShopItem()->getId(), $user->getUserShopItems()->toArray());
+        $qb =  $this->createQueryBuilder('s');
+
+        return $qb
+            ->andWhere($qb->expr()->notIn('s', $shopItemIds))
             ->getQuery()
             ->getResult()
         ;
@@ -91,12 +93,6 @@ class ShopItemRepository extends ServiceEntityRepository
             ->andWhere('IDENTITY(usi.user) = :user')
             ->setParameter('user', $userId)
             ;
-
-        //if ($type) {
-        //    $builder
-        //        ->andWhere('type = :type')
-        //        ->setParameters(['type' => $type]);
-        //}
 
         return $builder->getQuery()->getResult();
     }

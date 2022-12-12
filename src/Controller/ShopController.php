@@ -17,24 +17,6 @@ class ShopController extends AbstractController
     #[Route('/shop', name: 'list')]
     public function index(ShopItemRepository $shopItemRepository, Request $request, ShopService $shopService): Response
     {
-        //TODO: collection form or ajax
-        //$form = $this->createForm(ShopItemType::class);
-        //$form->handleRequest($request);
-        //
-        //$data = [];
-
-        //foreach ($shopItemRepository->findAll() as $item) {
-        //    $data[] = [
-        //        'id' => $item->getId(),
-        //        'type' => $item->getId(),
-        //        'price' => $item->getId(),
-        //    ];
-        //}
-
-        //if ($form->isSubmitted() && $form->isValid()) {
-        //
-        //}
-
         if ($request->getMethod() === 'POST') {
             $id = (int) $request->get('id');
 
@@ -48,8 +30,7 @@ class ShopController extends AbstractController
         }
 
         return $this->render('shop/index.html.twig', [
-            //'form' => $form->createView(),
-            'shopItems' => $shopItemRepository->findNewItems(),
+            'shopItems' => $shopItemRepository->findNewItems($this->getUser()),
         ]);
     }
 }
