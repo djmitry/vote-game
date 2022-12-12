@@ -95,4 +95,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setMaxHp($hp);
         $this->getEntityManager()->flush();
     }
+
+    //public function decreaseHp(User $user, int $points): void
+    //{
+    //    $user->setCurrentHp($user->getCurrentHp() - $points);
+    //    $this->getEntityManager()->flush();
+    //}
 }

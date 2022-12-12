@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\ShopItem;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -100,16 +101,16 @@ class ShopItemRepository extends ServiceEntityRepository
         return $builder->getQuery()->getResult();
     }
 
-    public function findUserActiveItems(int $userId, int $type = null): array
+    public function findUserActiveItems(User $user, int $type = null): array
     {
         $builder =  $this->createQueryBuilder('s')
             ->leftJoin('s.userShopItems', 'usi')
             ->leftJoin('usi.user', 'usiu')
-            ->andWhere('IDENTITY(usi.user) = :user')
+            ->andWhere('usi.user = :user')
             ->andWhere('s.type = :type')
             ->andWhere('usi.status = 1')
             ->setParameters([
-                'user' => $userId,
+                'user' => $user,
                 'type' => $type
             ]);
 
