@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Event;
 
-use App\Repository\UserRepository;
 use App\Service\Mine\Mine;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
@@ -14,7 +13,7 @@ class MineMessage implements MessageComponentInterface
 {
     protected array $connections = [];
 
-    public function __construct(private readonly Mine $mine, private readonly Redis $redis, private readonly UserRepository $userRepository)
+    public function __construct(private readonly Mine $mine, private readonly Redis $redis)
     {
     }
 
@@ -38,16 +37,12 @@ class MineMessage implements MessageComponentInterface
     function onMessage(ConnectionInterface $from, $msg): void
     {
         $data = json_decode($msg, true);
-        $userId = $this->redis->get($data['token']);
-        $user = $this->userRepository->find($userId);
-
-        $score = $this->mine->click(1, $user->getId());
-        $this->userRepository->addCash($user, $score);
-
+        $userId = (int)$this->redis->get($data['token']);
+        $score = $this->mine->click(1, $userId);
         $time = $this->redis->get('mineClickTime' . $userId);
 
         $from->send(json_encode([
-            'message' => 'Thanks for the message: ' . $data['token']  . $userId.  ', your score is: ' . $score,
+            'message' => 'Thanks for the message: ' . $data['token'] . $userId . ', your score is: ' . $score,
             'score' => $score,
             'time' => $time,
         ]));
