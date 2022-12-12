@@ -7,6 +7,7 @@
 
 <script>
 export default {
+  name: 'Cash',
   props: {
     cash: Number,
     token: Number,

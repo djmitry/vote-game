@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  name: 'HP',
   props: {
     currentHp: Number,
     maxHp: Number,
