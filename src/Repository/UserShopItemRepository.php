@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\ShopItem;
 use App\Entity\User;
 use App\Entity\UserShopItem;
+use App\Enum\UserShopItemStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -80,7 +81,7 @@ class UserShopItemRepository extends ServiceEntityRepository
         return true;
     }
 
-    public function changeStatus(UserShopItem $userShopItem, int $status)
+    public function changeStatus(UserShopItem $userShopItem, UserShopItemStatus $status): void
     {
         $userShopItem->setStatus($status);
 

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\ShopItem;
 use App\Entity\User;
+use App\Enum\UserShopItemStatus;
 use App\Repository\UserShopItemRepository;
 use App\Service\Modifier\Modifier;
 use Exception;
@@ -30,7 +31,7 @@ class Inventory
             throw new Exception('Item no found.');
         }
 
-        $this->userShopItemRepository->changeStatus($userShopItem, 1);
+        $this->userShopItemRepository->changeStatus($userShopItem, UserShopItemStatus::ACTIVE);
 
         return $this->modifier->modify($user, $userShopItem->getShopItem());
     }

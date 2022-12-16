@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\ShopItem;
 use App\Entity\User;
+use App\Entity\UserShopItem;
 use App\Repository\ShopItemRepository;
 use App\Service\Inventory;
 use Doctrine\Common\Collections\Criteria;
@@ -30,13 +31,14 @@ class InventoryController extends AbstractController
             $criteria = new Criteria();
             $expr = new Comparison('shopItem', '=', $item);
             $criteria->where($expr);
+            /** @var UserShopItem $userShopItem */
             $userShopItem = $user->getUserShopItems()->matching($criteria)->first();
 
             $shopItems[] = [
                 'id' => $item->getId(),
                 'type' => $item->getId(),
                 'title' => $item->getTitle(),
-                'status' => $userShopItem->getStatus(),
+                'status' => $userShopItem->getStatus()->value,
             ];
         }
 

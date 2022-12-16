@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\UserShopItemStatus;
 use App\Repository\UserShopItemRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -77,14 +78,14 @@ class UserShopItem
         return $this;
     }
 
-    public function getStatus(): int
+    public function getStatus(): UserShopItemStatus
     {
-        return $this->status;
+        return UserShopItemStatus::tryFrom($this->status);
     }
 
-    public function setStatus(int $status): self
+    public function setStatus(UserShopItemStatus $status): self
     {
-        $this->status = $status;
+        $this->status = $status->value;
 
         return $this;
     }
