@@ -60,16 +60,12 @@ class VoteService
 
         $win = $this->computeWin($totalBet, $totalWinBet, $vote->getBet());
         $vote->getUser()->setCash($vote->getUser()->getCash() + $win);
-        //$user = $this->doctrine->getRepository(User::class)->find($vote->getUser()->getId());
-        //$user->setCash($win);
-        //$this->doctrine->getManager()->persist($user);
 
         foreach ($winners as $winner) {
             $win = $this->computeWin($totalBet, $totalWinBet, $winner->getBet());
             $winner->setStatus(BetStatus::WIN);
             $winner->setWin($win);
             $winner->getUser()->setCash($winner->getUser()->getCash() + $win);
-            //$this->doctrine->getManager()->persist($winner->getUser());
         }
 
         $this->doctrine->getManager()->flush();
