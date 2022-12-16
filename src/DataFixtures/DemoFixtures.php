@@ -10,6 +10,7 @@ use App\Entity\UserShopItem;
 use App\Entity\Vote;
 use App\Entity\VoteTransaction;
 use App\Enum\BetCondition;
+use App\Enum\ShopItemType;
 use App\Enum\VoteStatus;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -96,17 +97,17 @@ class DemoFixtures extends Fixture
         $shopItemData = [
             [
                 'title' => 'HP +100',
-                'type' => 1,
+                'type' => ShopItemType::HP,
                 'value' => 100,
             ],
             [
                 'title' => 'Mining +50%',
-                'type' => 2,
+                'type' => ShopItemType::MINE,
                 'value' => 50,
             ],
             [
                 'title' => 'Win x2',
-                'type' => 3,
+                'type' => ShopItemType::WIN,
                 'value' => 2,
             ],
         ];

@@ -6,6 +6,7 @@ namespace App\Tests\Service\Modifier;
 
 use App\Entity\ShopItem;
 use App\Entity\User;
+use App\Enum\ShopItemType;
 use App\Repository\UserRepository;
 use App\Service\Modifier\HpModifier;
 use App\Service\Modifier\Modifier;
@@ -19,7 +20,7 @@ class ModifierTest extends TestCase
             new HpModifier($this->createMock(UserRepository::class)),
         ]);
 
-        $actual = $service->modify(new User(), (new ShopItem())->setType(1));
+        $actual = $service->modify(new User(), (new ShopItem())->setType(ShopItemType::HP));
 
         $this->assertTrue($actual);
     }

@@ -6,6 +6,7 @@ namespace App\Service\Modifier;
 
 use App\Entity\ShopItem;
 use App\Entity\User;
+use App\Enum\ShopItemType;
 use App\Repository\UserRepository;
 
 class HpModifier implements ModifierInterface
@@ -14,9 +15,9 @@ class HpModifier implements ModifierInterface
     {
     }
 
-    public function supports(int $type): bool
+    public function supports(ShopItemType $type): bool
     {
-        return $type === 1;
+        return $type === ShopItemType::HP;
     }
 
     public function modify(User $user, ShopItem $shopItem): bool

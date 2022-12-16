@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Service\Mine;
 
 use App\Entity\ShopItem;
+use App\Enum\ShopItemType;
 use App\Service\Mine\MineScore;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +38,7 @@ class MineScoreTest extends TestCase
                 100,
                 10,
                 [
-                    (new ShopItem())->setType(1)->setValue(100),
+                    (new ShopItem())->setType(ShopItemType::HP)->setValue(100),
                 ],
             ],
             [

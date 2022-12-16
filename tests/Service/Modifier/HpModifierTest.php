@@ -6,6 +6,7 @@ namespace App\Tests\Service\Modifier;
 
 use App\Entity\ShopItem;
 use App\Entity\User;
+use App\Enum\ShopItemType;
 use App\Repository\UserRepository;
 use App\Service\Modifier\HpModifier;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +18,7 @@ class HpModifierTest extends TestCase
         $repository = $this->createStub(UserRepository::class);
         $service = new HpModifier($repository);
 
-        $actual = $service->supports(1);
+        $actual = $service->supports(ShopItemType::HP);
 
         $this->assertTrue($actual);
     }

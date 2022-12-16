@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\ShopItemType;
 use App\Repository\ShopItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -90,14 +91,14 @@ class ShopItem
         return $this;
     }
 
-    public function getType(): int
+    public function getType(): ShopItemType
     {
-        return $this->type;
+        return ShopItemType::from($this->type);
     }
 
-    public function setType(int $type): self
+    public function setType(ShopItemType $type): self
     {
-        $this->type = $type;
+        $this->type = $type->value;
 
         return $this;
     }

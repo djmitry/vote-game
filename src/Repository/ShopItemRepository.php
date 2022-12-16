@@ -70,6 +70,9 @@ class ShopItemRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+    /**
+     * @return ShopItem[]
+     */
     public function findNewItems(User $user): array
     {
         $shopItemIds = array_map(fn(UserShopItem $item) => $item->getShopItem()->getId(), $user->getUserShopItems()->toArray());
