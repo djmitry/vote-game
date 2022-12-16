@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Enum\BetCondition;
-use App\Enum\BetStatus;
+use App\Enum\VoteStatus;
 use App\Repository\VoteTransactionRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -100,12 +100,12 @@ class VoteTransaction
         return $this;
     }
 
-    public function getStatus(): BetStatus
+    public function getStatus(): VoteStatus
     {
-        return BetStatus::from($this->status);
+        return VoteStatus::from($this->status);
     }
 
-    public function setStatus(BetStatus $status): self
+    public function setStatus(VoteStatus $status): self
     {
         $this->status = $status->value;
 

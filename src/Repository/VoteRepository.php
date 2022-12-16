@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Vote;
 use App\Enum\BetCondition;
-use App\Enum\BetStatus;
+use App\Enum\VoteStatus;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

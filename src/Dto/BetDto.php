@@ -7,7 +7,7 @@ namespace App\Dto;
 use App\Entity\User;
 use App\Entity\Vote;
 use App\Enum\BetCondition;
-use App\Enum\BetStatus;
+use App\Enum\VoteStatus;
 
 class BetDto
 {
@@ -17,7 +17,7 @@ class BetDto
         private readonly int          $userCash,
         private readonly int          $bet,
         private readonly BetCondition $condition,
-        private readonly BetStatus    $status,
+        private readonly VoteStatus   $status,
     )
     {
     }
@@ -57,9 +57,9 @@ class BetDto
     }
 
     /**
-     * @return BetStatus
+     * @return VoteStatus
      */
-    public function getStatus(): BetStatus
+    public function getStatus(): VoteStatus
     {
         return $this->status;
     }

@@ -10,7 +10,7 @@ use App\Entity\UserShopItem;
 use App\Entity\Vote;
 use App\Entity\VoteTransaction;
 use App\Enum\BetCondition;
-use App\Enum\BetStatus;
+use App\Enum\VoteStatus;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -84,7 +84,7 @@ class DemoFixtures extends Fixture
             $bet->setBet((int)ceil(rand(1000, 9000) / 100) * 100);
             $bet->setUser($users[array_rand($users)]);
             $bet->setVote($votes[array_rand($votes)]);
-            $bet->setStatus(BetStatus::BET);
+            $bet->setStatus(VoteStatus::BET);
             $bet->setBetCondition(BetCondition::from(rand(0, 2)));
             $bet->setCreatedAt((new DateTimeImmutable)->modify('- ' . rand(0, 1000) . ' min'));
             $manager->persist($bet);

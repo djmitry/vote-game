@@ -8,7 +8,7 @@ use App\Dto\BetDto;
 use App\Entity\User;
 use App\Entity\Vote;
 use App\Enum\BetCondition;
-use App\Enum\BetStatus;
+use App\Enum\VoteStatus;
 use App\Service\BetBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -38,7 +38,7 @@ class BetBuilderTest extends TestCase
             900,
             100,
             BetCondition::LIKE,
-            BetStatus::BET,
+            VoteStatus::BET,
         );
 
         return [

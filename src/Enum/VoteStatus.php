@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-enum BetStatus: int {
+enum VoteStatus: int {
     case BET = 0;
     case WIN = 1;
     case LOSS = 2;

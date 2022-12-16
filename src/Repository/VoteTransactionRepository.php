@@ -7,7 +7,7 @@ namespace App\Repository;
 use App\Dto\BetDto;
 use App\Entity\Vote;
 use App\Entity\VoteTransaction;
-use App\Enum\BetStatus;
+use App\Enum\VoteStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -99,7 +99,7 @@ class VoteTransactionRepository extends ServiceEntityRepository
             ->setParameters([
                 'vote' => $vote,
                 'voteCondition' => $vote->getBetCondition(),
-                'status' => BetStatus::BET,
+                'status' => VoteStatus::BET,
             ])
             ->orderBy('vt.id', 'ASC')
             ->getQuery()
@@ -119,7 +119,7 @@ class VoteTransactionRepository extends ServiceEntityRepository
             ->setParameters([
                 'vote' => $vote,
                 'voteCondition' => $vote->getBetCondition(),
-                'status' => BetStatus::BET,
+                'status' => VoteStatus::BET,
             ])
             ->orderBy('vt.id', 'ASC')
             ->getQuery()

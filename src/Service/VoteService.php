@@ -7,7 +7,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Entity\Vote;
 use App\Enum\BetCondition;
-use App\Enum\BetStatus;
+use App\Enum\VoteStatus;
 use App\Repository\VoteTransactionRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -49,7 +49,7 @@ class VoteService
 
             foreach ($losers as $loser) {
                 $totalBet += $loser->getBet();
-                $loser->setStatus(BetStatus::LOSS);
+                $loser->setStatus(VoteStatus::LOSS);
             }
         }
 
@@ -63,7 +63,7 @@ class VoteService
 
         foreach ($winners as $winner) {
             $win = $this->computeWin($totalBet, $totalWinBet, $winner->getBet());
-            $winner->setStatus(BetStatus::WIN);
+            $winner->setStatus(VoteStatus::WIN);
             $winner->setWin($win);
             $winner->getUser()->setCash($winner->getUser()->getCash() + $win);
         }

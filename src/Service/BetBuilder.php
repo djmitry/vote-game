@@ -7,7 +7,7 @@ namespace App\Service;
 use App\Dto\BetDto;
 use App\Entity\User;
 use App\Enum\BetCondition;
-use App\Enum\BetStatus;
+use App\Enum\VoteStatus;
 
 class BetBuilder
 {
@@ -23,7 +23,7 @@ class BetBuilder
             $user->getCash() - $cash,
             $cash,
             $condition,
-            BetStatus::BET
+            VoteStatus::BET
         );
     }
 }
