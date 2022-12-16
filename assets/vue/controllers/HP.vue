@@ -13,7 +13,10 @@ export default {
     token: Number,
   },
   mounted() {
-    const es = new EventSource('http://localhost:49150/.well-known/mercure?topic=' + encodeURIComponent('http://vote/user/' + this.token + '/hp'));
+    const url = new URL('http://localhost:49150/.well-known/mercure');
+    url.searchParams.append('topic', 'user/hp/' + this.token);
+    console.log(url)
+    const es = new EventSource(url);
     es.onmessage = e => {
       const data = JSON.parse(e.data);
       this.now = data.currentHp

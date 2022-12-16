@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Service\Mine\Mine;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
-use Redis;
 
 class MineMessage implements MessageComponentInterface
 {
     protected array $connections = [];
 
-    public function __construct(private readonly Mine $mine, private readonly Redis $redis)
+    public function __construct(
+        private readonly Mine $mine,
+        private readonly JWTTokenManagerInterface $jwtManager,
+    )
     {
     }
 
@@ -37,14 +40,18 @@ class MineMessage implements MessageComponentInterface
     function onMessage(ConnectionInterface $from, $msg): void
     {
         $data = json_decode($msg, true);
-        $userId = (int)$this->redis->get($data['token']);
-        $score = $this->mine->click(1, $userId);
-        $time = $this->redis->get('mineClickTime' . $userId);
+        $payload = $this->jwtManager->parse($data['token']);
+        if (!isset($payload['id'])) {
+            $from->close();
+        }
+
+        $userId = $payload['id'];
+        $score = $this->mine->click(1, $payload['id']);
 
         $from->send(json_encode([
-            'message' => 'Thanks for the message: ' . $data['token'] . $userId . ', your score is: ' . $score,
+            'token' => $data['token'],
+            'userId' => $userId,
             'score' => $score,
-            'time' => $time,
         ]));
     }
 }

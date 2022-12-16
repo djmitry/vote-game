@@ -39,9 +39,9 @@
                         <div class="d-flex">
                             <ul class="navbar-nav">
                                 <li class="me-3">
-                                    <div {{ vue_component('Cash', {'cash': app.user.cash, 'token': app.user.id}) }}></div>
+                                    <div {{ vue_component('Cash', {'cash': app.user.cash, 'token': push_token.create(app.user.id)}) }}></div>
                                 </li>
-                                <li><div {{ vue_component('HP', {'currentHp': app.user.currentHp, 'maxHp': app.user.maxHp, 'token': app.user.id}) }}></div></li>
+                                <li><div {{ vue_component('HP', {'currentHp': app.user.currentHp, 'maxHp': app.user.maxHp, 'token': push_token.create(app.user.id)}) }}></div></li>
                                 {% if is_granted('ROLE_GAME_OVER') %}
                                     <li class="ms-3"><span class="badge rounded-pill bg-danger">GAME OVER</span></li>
                                 {% endif %}

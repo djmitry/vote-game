@@ -6,6 +6,7 @@ namespace App\EventSubscriber;
 
 use App\Event\MineClick;
 use App\Repository\UserRepository;
+use App\Service\PushToken;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
@@ -17,6 +18,7 @@ class MineClickSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly HubInterface $hub,
+        private readonly PushToken $pushToken,
     )
     {
     }
@@ -29,15 +31,18 @@ class MineClickSubscriber implements EventSubscriberInterface
 
         $this->userRepository->save($event->getUser(), true);
 
+        //TODO: Use mercury auth
+        $pushToken = $this->pushToken->create($user->getId());
+
         $update = new Update(
-            'http://vote/user/' . $user->getId() . '/hp',
-            json_encode(['currentHp' => $user->getCurrentHp()])
+            'user/hp/' . $pushToken,
+            json_encode(['currentHp' => $user->getCurrentHp()]),
         );
         $this->hub->publish($update);
 
         $update = new Update(
-            'http://vote/user/' . $user->getId() . '/cash',
-            json_encode(['cash' => $user->getCash()])
+            'user/cash/' . $pushToken,
+            json_encode(['cash' => $user->getCash()]),
         );
         $this->hub->publish($update);
     }

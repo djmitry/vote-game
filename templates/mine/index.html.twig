@@ -3,5 +3,5 @@
 {% block title %}Mine{% endblock %}
 
 {% block body %}
-    <div {{ vue_component('Mine', {token: token}) }}></div>
+    <div {{ vue_component('Mine', {token: jwt_token.create}) }}></div>
 {% endblock %}

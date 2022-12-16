@@ -1,5 +1,8 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    globals:
+        jwt_token: '@App\Service\JwtToken'
+        push_token: '@App\Service\PushToken'
 
 when@test:
     twig:

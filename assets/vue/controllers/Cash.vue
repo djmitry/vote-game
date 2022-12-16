@@ -11,6 +11,7 @@ export default {
   props: {
     cash: Number,
     token: Number,
+    // url: String,
   },
   data() {
     return {
@@ -18,7 +19,13 @@ export default {
     }
   },
   mounted() {
-    const es = new EventSource('http://localhost:49150/.well-known/mercure?topic=' + encodeURIComponent('http://vote/user/' + this.token + '/cash'));
+    const url = new URL('http://localhost:49150/.well-known/mercure');
+    url.searchParams.append('topic', 'user/cash/' + this.token);
+    console.log(url)
+    const es = new EventSource(url);
+    // const es = new EventSource(this.url, {
+    //   withCredentials: true,
+    // });
     es.onmessage = e => {
       const data = JSON.parse(e.data);
       this.amount = data.cash
